@@ -4,6 +4,24 @@ const user = require("../Models/database");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+/*
+@Route: /api/register
+@Method: POST
+@Description: SignUp a user
+@RequiredHeaders: email, password, name, contact
+
+@Route: /api/login
+@Method: POST
+@Description: Login a user
+@RequiredHeaders: email, password
+
+
+@Route: /api/user/details
+@Method: GET
+@Description: Get Details of a user
+@RequiredHeaders: token(jwt)
+*/
+
 // Register A new User :-
 router.post("/register", async (req, res) => {
   const finduser = await user.findOne({ email: req.body.email });
@@ -28,7 +46,6 @@ router.post("/register", async (req, res) => {
       });
   }
 });
-
 // Login a User :-
 router.post("/login", async (req, res) => {
   const finduser = await user.findOne({ email: req.body.email });
