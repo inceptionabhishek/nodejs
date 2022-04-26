@@ -57,6 +57,19 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Get All Users :-
+// Get One user from Token :-
+router.get("/user/details", async (req, res) => {
+  const token = req.body.token;
+  if (token) {
+    jwt.verify(token, process.env.JWT_KEY, async (err, authData) => {
+      if (err) {
+        res.send("Invalid Token");
+      } else {
+        const finduser = await user.findById(authData.userId);
+        res.send(finduser);
+      }
+    });
+  }
+});
 
 module.exports = router;
