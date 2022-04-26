@@ -19,4 +19,18 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Login a User :-
+router.post("/login", async (req, res) => {
+  const finduser = await user.findOne({ email: req.body.email });
+  if (finduser) {
+    if (finduser.password === req.body.password) {
+      res.send("Login Successfully");
+    } else {
+      res.send("Password is Incorrect");
+    }
+  } else {
+    res.send("User Not Found");
+  }
+});
+
 module.exports = router;
