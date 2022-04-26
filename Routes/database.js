@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const user = require("../Models/database");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // Register A new User :-
 router.post("/register", async (req, res) => {
@@ -34,7 +35,20 @@ router.post("/login", async (req, res) => {
   if (finduser) {
     const result = await bcrypt.compare(req.body.password, finduser.password);
     if (result) {
-      res.send("Login Successfully");
+      const token = jwt.sign(
+        {
+          email: finduser.email,
+          userId: finduser._id,
+        },
+        process.env.JWT_KEY,
+        {
+          expiresIn: "1h",
+        }
+      );
+      res.send({
+        message: "Login Successfull",
+        token: token,
+      });
     } else {
       res.send("Password is Incorrect");
     }
@@ -42,5 +56,7 @@ router.post("/login", async (req, res) => {
     res.send("User Not Found");
   }
 });
+
+// Get All Users :-
 
 module.exports = router;
